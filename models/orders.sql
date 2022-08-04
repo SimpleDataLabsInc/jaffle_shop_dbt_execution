@@ -15,18 +15,9 @@ payments as (
 order_payments as (
 
     select
-        order_id,
-
-        {% set payment_methods = ['credit_card', 'coupon', 'bank_transfer', 'gift_card'] %}
-        {% for payment_method in payment_methods -%}
-        sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}
-        {% endfor -%}
-
-        sum(amount) as total_amount
+        order_id
 
     from payments
-
-    group by order_id
 
 ),
 
@@ -36,8 +27,7 @@ final as (
         orders.order_id,
         orders.customer_id,
         orders.order_date,
-        orders.status,
-        order_payments.total_amount as amount
+        orders.status
 
     from orders
 
